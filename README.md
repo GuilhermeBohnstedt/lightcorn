@@ -6,7 +6,7 @@
 
 ![](screenshot.png)
 
-A project to recreate 2048 game in Svelte. The original [2048 Game](https://github.com/gabrielecirulli/2048)
+A project to controll Magic Home Device for LED Strip. Recreated in Dart.
 
 ## Why?
 
