@@ -8,7 +8,7 @@ class CirclePainter extends CustomPainter {
     required this.color,
   }) : super(repaint: _animation);
   final Color color;
-  final Animation<double> _animation;
+  final AnimationController _animation;
   void circle(Canvas canvas, Rect rect, double value) {
     final double opacity = (1.0 - (value / 4.0)).clamp(0.0, 1.0);
     final Color _color = color.withOpacity(opacity);
@@ -21,9 +21,16 @@ class CirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
-    for (int wave = 3; wave >= 0; wave--) {
-      circle(canvas, rect, wave + _animation.value);
+    if(!_animation.isAnimating) {
+      final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
+      for (int wave = 3; wave >= 0; wave--) {
+        circle(canvas, rect, wave * _animation.value);
+      }
+    } else {
+      final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
+      for (int wave = 3; wave >= 0; wave--) {
+        circle(canvas, rect, wave + _animation.value);
+      }
     }
   }
 
@@ -44,13 +51,15 @@ class CurveWave extends Curve {
 
 class RipplesAnimation extends StatefulWidget {
   const RipplesAnimation({
-    this.size = 80.0,
+    this.size = 90.0,
     this.color = Colors.red,
+    this.animate = false,
     required this.child,
   });
   final double size;
   final Color color;
   final Widget child;
+  final bool animate;
   @override
   _RipplesAnimationState createState() => _RipplesAnimationState();
 }
@@ -64,22 +73,23 @@ class _RipplesAnimationState extends State<RipplesAnimation>
     _controller = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
-    )..repeat();
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant RipplesAnimation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.animate) {
+      _controller.repeat();
+    } else {
+      _controller.stop();
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  Widget _button() {
-    return Center(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(widget.size),
-        child: widget.child,
-      ),
-    );
   }
 
   @override
@@ -93,7 +103,9 @@ class _RipplesAnimationState extends State<RipplesAnimation>
         child: SizedBox(
           width: widget.size * 4.125,
           height: widget.size * 4.125,
-          child: _button(),
+          child: Center(
+            child: widget.child,
+          ),
         ),
       ),
     );

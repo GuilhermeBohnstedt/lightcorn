@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lightcorn/components/RippleAnimation.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:magic_home/magic_home.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -8,6 +10,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
   bool _scanning = false;
+  bool _scanned= false;
+  List<Light> _ligths = [];
+
+  @override
+  void initState() {
+    super.initState();
+    LightDiscovery.timeout = 3000;
+  }
+
+  handleClickScan() {
+    setState(() {
+      if (!_scanning) {
+        _scanning = true;
+        LightDiscovery.discover().then((value) => setState(() {
+              _scanning = false;
+              this._ligths = value;
+            }));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +43,9 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           children: <Widget>[
             RipplesAnimation(
                 color: Colors.indigo,
+                animate: _scanning,
                 child: RawMaterialButton(
-                  onPressed: () {
-                    setState(() {
-                      _scanning = !_scanning;
-                    });
-                  },
+                  onPressed: handleClickScan,
                   elevation: 5.0,
                   fillColor: Colors.white,
                   child: Text(
