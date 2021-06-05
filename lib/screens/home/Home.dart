@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lightcorn/components/PulsatingCircleIconButton.dart';
 import 'package:lightcorn/components/RippleAnimation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:magic_home/magic_home.dart';
@@ -8,9 +9,9 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with TickerProviderStateMixin {
+class _HomeState extends State<Home> {
   bool _scanning = false;
-  bool _scanned= false;
+  bool _scanned = false;
   List<Light> _ligths = [];
 
   @override
@@ -56,7 +57,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                   ),
                   padding: EdgeInsets.all(80.0),
                   shape: CircleBorder(),
-                ))
+                )),
+            PulsatingCircleIconButton(
+                onTap: () {},
+                icon: Icon(
+                  Icons.monetization_on,
+                  color: Colors.blueGrey,
+                )),
           ],
         ),
       ),

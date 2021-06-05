@@ -21,16 +21,9 @@ class CirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if(!_animation.isAnimating) {
-      final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
-      for (int wave = 3; wave >= 0; wave--) {
-        circle(canvas, rect, wave * _animation.value);
-      }
-    } else {
-      final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
-      for (int wave = 3; wave >= 0; wave--) {
-        circle(canvas, rect, wave + _animation.value);
-      }
+    final Rect rect = Rect.fromLTRB(0.0, 0.0, size.width, size.height);
+    for (int wave = 3; wave >= 0; wave--) {
+      circle(canvas, rect, wave + _animation.value);
     }
   }
 
@@ -38,20 +31,9 @@ class CirclePainter extends CustomPainter {
   bool shouldRepaint(CirclePainter oldDelegate) => true;
 }
 
-class CurveWave extends Curve {
-  const CurveWave();
-  @override
-  double transform(double t) {
-    if (t == 0 || t == 1) {
-      return 0.01;
-    }
-    return math.sin(t * math.pi);
-  }
-}
-
 class RipplesAnimation extends StatefulWidget {
   const RipplesAnimation({
-    this.size = 90.0,
+    this.size = 80.0,
     this.color = Colors.red,
     this.animate = false,
     required this.child,
@@ -82,7 +64,7 @@ class _RipplesAnimationState extends State<RipplesAnimation>
     if (widget.animate) {
       _controller.repeat();
     } else {
-      _controller.stop();
+      _controller.reset();
     }
   }
 
@@ -101,8 +83,8 @@ class _RipplesAnimationState extends State<RipplesAnimation>
           color: widget.color,
         ),
         child: SizedBox(
-          width: widget.size * 4.125,
-          height: widget.size * 4.125,
+          width: widget.size * 5.125,
+          height: widget.size * 5.125,
           child: Center(
             child: widget.child,
           ),
