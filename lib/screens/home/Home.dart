@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lightcorn/components/PulsatingCircleIconButton.dart';
 import 'package:lightcorn/components/RippleAnimation.dart';
+import 'package:lightcorn/screens/lights/LightsList.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:magic_home/magic_home.dart';
 
 class Home extends StatefulWidget {
+  static const routeName = '/';
+
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   bool _scanning = false;
-  bool _scanned = false;
-  List<Light> _ligths = [];
 
   @override
   void initState() {
@@ -24,10 +25,16 @@ class _HomeState extends State<Home> {
     setState(() {
       if (!_scanning) {
         _scanning = true;
-        LightDiscovery.discover().then((value) => setState(() {
-              _scanning = false;
-              this._ligths = value;
-            }));
+        LightDiscovery.discover().then((value) {
+          setState(() {
+            this._scanning = false;
+          });
+          Navigator.pushNamed(
+            context,
+            LightsList.routeName,
+            arguments: LightsListArguments(value),
+          );
+        });
       }
     });
   }
