@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lightcorn/components/PulsatingCircleIconButton.dart';
 import 'package:lightcorn/components/RippleAnimation.dart';
 import 'package:lightcorn/screens/lights/LightsList.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -64,12 +63,6 @@ class _HomeState extends State<Home> {
                   ),
                   padding: EdgeInsets.all(80.0),
                   shape: CircleBorder(),
-                )),
-            PulsatingCircleIconButton(
-                onTap: () {},
-                icon: Icon(
-                  Icons.monetization_on,
-                  color: Colors.blueGrey,
                 )),
           ],
         ),

@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:lightcorn/screens/lights/LightConfig.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:magic_home/magic_home.dart';
 
-// You can pass any object to the arguments parameter.
-// In this example, create a class that contains both
-// a customizable title and message.
 class LightsListArguments {
   final List<Light> lights;
 
   LightsListArguments(this.lights);
 }
 
-class LightsList extends StatelessWidget {
+class LightsList extends StatefulWidget {
   static const routeName = '/light-list';
 
   @override
+  _LightsListState createState() => _LightsListState();
+}
+
+class _LightsListState extends State<LightsList> {
+
+  handleClickItem(Light light) {
+    Navigator.pushNamed(
+      context,
+      LightsList.routeName,
+      arguments: LightConfigArguments(light),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Extract the arguments from the current ModalRoute
-    // settings and cast them as ScreenArguments.
     final args =
         ModalRoute.of(context)!.settings.arguments as LightsListArguments;
 
@@ -31,6 +41,9 @@ class LightsList extends StatelessWidget {
             return ListTile(
               leading: Icon(Icons.lightbulb),
               title: Text(e.address),
+              onTap: () {
+                handleClickItem(e);
+              },
             );
           })
         ],
