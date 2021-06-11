@@ -1,10 +1,11 @@
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lightcorn/components/PulsatingCircleIconButton.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:magic_home/magic_home.dart';
+import 'package:magic_home/magic_home.dart' as MagicHome;
 
 class LightConfigArguments {
-  final Light light;
+  final MagicHome.Light light;
 
   LightConfigArguments(this.light);
 }
@@ -12,8 +13,12 @@ class LightConfigArguments {
 class LightConfig extends StatelessWidget {
   static const routeName = '/light';
 
-  handleToggleLight(Light light) {
+  handleToggleLight(MagicHome.Light light) {
     light.setPower(!light.power);
+  }
+
+  handleChangeColor(MagicHome.Light light, Color color) {
+    light.setColor(MagicHome.Color(color.red, color.green, color.blue));
   }
 
   @override
@@ -23,7 +28,7 @@ class LightConfig extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Light List'),
+        title: Text('Light Configuration'),
       ),
       body: ListView(
         children: <Widget>[
@@ -35,6 +40,8 @@ class LightConfig extends StatelessWidget {
                 Icons.lightbulb,
                 color: Colors.yellow,
               )),
+          ColorPicker(
+              onColorChanged: (color) => handleChangeColor(args.light, color))
         ],
       ),
     );
